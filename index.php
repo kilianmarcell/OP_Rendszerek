@@ -1,6 +1,9 @@
 <?php
 
 require_once "db.php";
+require_once "oprendszer.php";
+
+$lista = oprendszer::beolvas();
 
 ?><!DOCTYPE html>
 <html lang="hu">
@@ -11,6 +14,12 @@ require_once "db.php";
      <title>Operációs rendszerek</title>
 </head>
 <body>
-     
+     <div>
+          <?php
+               foreach ($lista as $i) {
+                    echo $i -> getNev() . " " . $i -> getFelhasznalok() . " " . $i -> getDatum() -> format('Y-m-d') . " " . $i -> getLeiras() . "<br>";
+               }
+          ?>
+     </div>
 </body>
 </html>

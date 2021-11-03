@@ -1,6 +1,6 @@
 <?php
 
-class OpRendszerek {
+class oprendszer {
      private $id;
      private $nev;
      private $felhasznalok;
@@ -48,5 +48,22 @@ class OpRendszerek {
 
      public function setLeiras(string $leiras) : void {
           $this -> leiras = $leiras;
+     }
+
+     public static function beolvas() : array {
+          global $db;
+
+          $lekerdez = $db -> query('SELECT * FROM op_systems') -> fetchAll();
+
+          $list = [];
+
+          foreach ($lekerdez as $i) {
+               $ujOprendszer = new oprendszer($i['nev'], $i['felhasznalok_szama'], new DateTime($i['letrehozas_datuma']), $i['leiras']);
+               $ujOprendszer -> id = $i['id'];
+
+               $list[] = $ujOprendszer;
+          }
+
+          return $list;
      }
 }
