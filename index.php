@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     echo 'Első verzió megjelenése: ' . $i -> getDatum() -> format('Y-m-d') . '<br>';
                     echo 'Leírás: ' . $i -> getLeiras() . '<br>';
                     echo '<form method="POST"><button name="torles" value="' . $i -> getId() . '">Törlés</button></form>';
-                    echo '<a href="szerkesztes.php?id="' . $i -> getId() . '"><button>Szerkesztés</button></a>';
+                    echo '<a href="szerkesztes.php?id=' . $i -> getId() . '"><button>Szerkesztés</button></a>';
                     echo '</div>';
                }
           ?>

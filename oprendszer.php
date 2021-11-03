@@ -85,6 +85,77 @@ class oprendszer {
           global $db;
 
           $db -> prepare('DELETE FROM op_systems WHERE id LIKE :id')
+          
           -> execute([':id' => $id]);
+     }
+
+     public static function getById(int $id) : oprendszer {
+          global $db;
+  
+          $s = $db -> prepare('SELECT * FROM op_systems WHERE id = :id');
+
+          $s -> execute([':id' => $id]);
+
+          $e = $s -> fetchAll();
+  
+          if (count($e) !== 1) {
+              throw new Exception("A lekérdezés több sort ad vissza!");
+          }
+  
+          $oprendszer = new oprendszer(
+               $e[0]['nev'],
+               $e[0]['felhasznalok_szama'],
+               new DateTime($e[0]['letrehozas_datuma']),
+               $e[0]['leiras']
+          );
+
+          $oprendszer -> id = $e[0]['id'];
+
+          return $oprendszer;
+      }
+
+     //public static function szerkeszt(int $id) : oprendszer {
+     //     global $db;
+//
+     //     $s = $db -> prepare('UPDATE op_systems SET nev = :nev, felhasznalok_szama = :felhasznalok_szama,
+     //                    letrehozas_datuma = :letrehozas_datuma, leiras = :leiras WHERE id = :id')
+//
+     //     $s = -> execute([
+     //                    ':nev' => $this -> nev,
+     //                    ':felhasznalok_szama' => $this -> felhasznalok,
+     //                    ':letrehozas_datuma' => $this -> datum -> format('Y-m-d'),
+     //                    ':leiras' => $this -> leiras,
+     //                    ':id' => $id
+     //     ]);
+//
+     //     $e = $s -> fetchAll();
+//
+     //     if (count($e) !== 1) {
+     //          throw new Exception("A lekérdezés több sort ad vissza!");
+     //     }
+//
+     //     $oprendszer = new oprendszer(
+     //          $e[0]['nev'],
+     //          $e[0]['felhasznalok_szama'],
+     //          new DateTime($e[0]['letrehozas_datuma']),
+     //          $e[0]['leiras'],
+     //          $e[0]['id']
+     //     );
+//
+     //     return $oprendszer;
+     //}
+
+     public function szerkeszt() {
+          global $db;
+
+          $db -> prepare('UPDATE op_systems SET nev = :nev, felhasznalok_szama = :felhasznalok_szama,
+          letrehozas_datuma = :letrehozas_datuma, leiras = :leiras WHERE id = :id')
+                         -> execute([
+                              ':nev' => $this -> nev,
+                              ':felhasznalok_szama' => $this -> felhasznalok,
+                              ':letrehozas_datuma' => $this -> datum -> format('Y-m-d'),
+                              ':leiras' => $this -> leiras,
+                              ':id' => $this -> id
+                         ]);
      }
 }
