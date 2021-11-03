@@ -43,14 +43,53 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <body>
 
-     <form method="POST" class="m-5 h3">
+     <form method="POST" class="m-5 h2">
 
-          Név: <input type="text" name="nev"><br>
-          Felhasználók száma: <input type="number" name="felhasznalok"><br>
-          Első verzió megjelenése: <input type="date" name="datum"><br>
-          Leírás: <input type="text" name="leiras"><br>
-          Emberek hány százaléke használja: <input type="number" name="szazalek"><br>
-          <input class="mt-5" type="submit" value="Hozzáadás">
+          <div class="container">
+               <div class="row">
+                    <div class="col-sm-5">
+                         Név:
+                    </div>
+                    <div class="col-sm-7">
+                         <input type="text" name="nev"><br>
+                    </div>
+               </div>
+               <div class="row">
+                    <div class="col-sm-5">
+                         Felhasználók száma:
+                    </div>
+                    <div class="col-sm-7">
+                         <input type="number" name="felhasznalok"><br>
+                    </div>
+               </div>
+               <div class="row">
+                    <div class="col-sm-5">
+                         Első verzió megjelenése:
+                    </div>
+                    <div class="col-sm-7">
+                         <input type="date" name="datum"><br>
+                    </div>
+               </div>
+               <div class="row">
+                    <div class="col-sm-5">
+                         Leírás:
+                    </div>
+                    <div class="col-sm-7">
+                         <input type="text" name="leiras"><br>
+                    </div>
+               </div>
+               <div class="row">
+                    <div class="col-sm-5">
+                         Emberek hány százaléke használja:
+                    </div>
+                    <div class="col-sm-7">
+                         <input type="number" name="szazalek"><br>
+                    </div>
+               </div>
+
+               <input class=" btn btn-primary btn-lg mt-5" type="submit" value="Hozzáadás">
+
+          </div>
 
     </form>
 
@@ -60,18 +99,72 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                foreach ($lista as $i) {
 
-                    echo '<div class="h3 mb-5">';
-                    echo 'Operációs rendszer neve: ' . $i -> getNev() . '<br>';
-                    echo 'Felhasználók száma: ' . $i -> getFelhasznalok() . '<br>';
-                    echo 'Első verzió megjelenése: ' . $i -> getDatum() -> format('Y-m-d') . '<br>';
-                    echo 'Leírás: ' . $i -> getLeiras() . '<br>';
-                    echo 'Emberek hány százaléke használja: ' . $i -> getSzazalek() . '%<br>';
-                    echo '<form method="POST"><button name="torles" value="' . $i -> getId() . '">Törlés</button></form>';
-                    echo '<a href="szerkesztes.php?id=' . $i -> getId() . '"><button>Szerkesztés</button></a>';
+                    echo '<div class="container h3 mb-5">';
+
+                         echo '<div class="row mb-2">';
+                              echo '<div class="col-5">';
+                                   echo 'Operációs rendszer neve: ';
+                              echo '</div>';
+
+                              echo '<div class="col-7">';
+                                   echo $i -> getNev() . '<br>';
+                              echo '</div>';
+                         echo '</div>';
+
+                         echo '<div class="row mb-2">';
+                              echo '<div class="col-5">';
+                                   echo 'Felhasználók száma: ';
+                              echo '</div>';
+
+                              echo '<div class="col-7">';
+                                   echo $i -> getFelhasznalok() . '<br>';;
+                              echo '</div>';
+                         echo '</div>';
+
+                    
+                         echo '<div class="row mb-2">';
+                              echo '<div class="col-5">';
+                                   echo 'Első verzió megjelenése: ';
+                              echo '</div>';
+
+                              echo '<div class="col-7">';
+                                   echo $i -> getDatum() -> format('Y-m-d') . '<br>';
+                              echo '</div>';
+                         echo '</div>';
+
+                         echo '<div class="row mb-2">';
+                              echo '<div class="col-5">';
+                                   echo 'Leírás: ';
+                              echo '</div>';
+
+                              echo '<div class="col-7">';
+                                   echo $i -> getLeiras() . '<br>';
+                              echo '</div>';
+                         echo '</div>';
+
+                         echo '<div class="row mb-3">';
+                              echo '<div class="col-5">';
+                                   echo 'Emberek hány százaléke használja: ';
+                              echo '</div>';
+
+                              echo '<div class="col-7">';
+                                   echo $i -> getSzazalek() . '%<br>';
+                              echo '</div>';
+                         echo '</div>';
+
+                         echo '<div class="row col-5 mb-5">';
+                              echo '<div class="col-5">';
+                                   echo '<form method="POST"><button class="btn btn-danger btn-lg" name="torles" value="' . $i -> getId() . '">Törlés</button></form>';
+                              echo '</div>';
+
+                              echo '<div class="col-7">';
+                                   echo '<a href="szerkesztes.php?id=' . $i -> getId() . '"><button class="btn btn-secondary btn-lg">Szerkesztés</button></a>';
+                              echo '</div>';
+                         echo '</div>';
                     echo '</div>';
 
                }
-
+               
           ?>
 
      </div>
