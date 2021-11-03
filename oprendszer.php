@@ -58,7 +58,10 @@ class oprendszer {
           $list = [];
 
           foreach ($lekerdez as $i) {
-               $ujOprendszer = new oprendszer($i['nev'], $i['felhasznalok_szama'], new DateTime($i['letrehozas_datuma']), $i['leiras']);
+               $ujOprendszer = new oprendszer($i['nev'],
+                                   $i['felhasznalok_szama'],
+                                   new DateTime($i['letrehozas_datuma']),
+                                   $i['leiras']);
                $ujOprendszer -> id = $i['id'];
 
                $list[] = $ujOprendszer;
