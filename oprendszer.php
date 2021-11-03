@@ -6,12 +6,14 @@ class oprendszer {
      private $felhasznalok;
      private $datum;
      private $leiras;
+     private $szazalek;
 
-     public function __construct(string $nev, int $felhasznalok, DateTime $datum, string $leiras) {
+     public function __construct(string $nev, int $felhasznalok, DateTime $datum, string $leiras, int $szazalek) {
           $this -> nev = $nev;
           $this -> felhasznalok = $felhasznalok;
           $this -> datum = $datum;
           $this -> leiras = $leiras;
+          $this -> szazalek = $szazalek;
      }
 
      public function getId() : int {
@@ -50,6 +52,14 @@ class oprendszer {
           $this -> leiras = $leiras;
      }
 
+     public function getSzazalek() : int {
+          return $this -> szazalek;
+     }
+
+     public function setSzazalek(int $szazalek) : void {
+          $this -> szazalek = $szazalek;
+     }
+
      public static function beolvas() : array {
           global $db;
 
@@ -58,10 +68,14 @@ class oprendszer {
           $list = [];
 
           foreach ($lekerdez as $i) {
-               $ujOprendszer = new oprendszer($i['nev'],
+               $ujOprendszer = new oprendszer(
+                                   $i['nev'],
                                    $i['felhasznalok_szama'],
                                    new DateTime($i['letrehozas_datuma']),
-                                   $i['leiras']);
+                                   $i['leiras'],
+                                   $i['szazalek']
+                              );
+
                $ujOprendszer -> id = $i['id'];
 
                $list[] = $ujOprendszer;
@@ -73,12 +87,14 @@ class oprendszer {
      public function hozzaad() {
           global $db;
 
-          $db -> prepare('INSERT INTO op_systems(nev, felhasznalok_szama, letrehozas_datuma, leiras)
-                         VALUES (:nev, :felhasznalok_szama, :letrehozas_datuma, :leiras)')
+          $db -> prepare('INSERT INTO op_systems(nev, felhasznalok_szama, letrehozas_datuma, leiras, szazalek)
+                         VALUES (:nev, :felhasznalok_szama, :letrehozas_datuma, :leiras, :szazalek)')
           -> execute([':nev' => $this -> nev,
                     ':felhasznalok_szama' => $this -> felhasznalok,
                     ':letrehozas_datuma' => $this -> datum -> format('Y-m-d'),
-                    ':leiras' => $this -> leiras]);
+                    ':leiras' => $this -> leiras,
+                    ':szazalek' => $this -> szazalek
+               ]);
      }
 
      public static function torles(int $id) {
@@ -106,55 +122,27 @@ class oprendszer {
                $e[0]['nev'],
                $e[0]['felhasznalok_szama'],
                new DateTime($e[0]['letrehozas_datuma']),
-               $e[0]['leiras']
+               $e[0]['leiras'],
+               $e[0]['szazalek']
           );
 
           $oprendszer -> id = $e[0]['id'];
 
           return $oprendszer;
-      }
-
-     //public static function szerkeszt(int $id) : oprendszer {
-     //     global $db;
-//
-     //     $s = $db -> prepare('UPDATE op_systems SET nev = :nev, felhasznalok_szama = :felhasznalok_szama,
-     //                    letrehozas_datuma = :letrehozas_datuma, leiras = :leiras WHERE id = :id')
-//
-     //     $s = -> execute([
-     //                    ':nev' => $this -> nev,
-     //                    ':felhasznalok_szama' => $this -> felhasznalok,
-     //                    ':letrehozas_datuma' => $this -> datum -> format('Y-m-d'),
-     //                    ':leiras' => $this -> leiras,
-     //                    ':id' => $id
-     //     ]);
-//
-     //     $e = $s -> fetchAll();
-//
-     //     if (count($e) !== 1) {
-     //          throw new Exception("A lekérdezés több sort ad vissza!");
-     //     }
-//
-     //     $oprendszer = new oprendszer(
-     //          $e[0]['nev'],
-     //          $e[0]['felhasznalok_szama'],
-     //          new DateTime($e[0]['letrehozas_datuma']),
-     //          $e[0]['leiras'],
-     //          $e[0]['id']
-     //     );
-//
-     //     return $oprendszer;
-     //}
-
+     }
+     
      public function szerkeszt() {
           global $db;
 
           $db -> prepare('UPDATE op_systems SET nev = :nev, felhasznalok_szama = :felhasznalok_szama,
-          letrehozas_datuma = :letrehozas_datuma, leiras = :leiras WHERE id = :id')
+                         letrehozas_datuma = :letrehozas_datuma, leiras = :leiras, szazalek = :szazalek
+                         WHERE id = :id')
                          -> execute([
                               ':nev' => $this -> nev,
                               ':felhasznalok_szama' => $this -> felhasznalok,
                               ':letrehozas_datuma' => $this -> datum -> format('Y-m-d'),
                               ':leiras' => $this -> leiras,
+                              ':szazalek' => $this -> szazalek,
                               ':id' => $this -> id
                          ]);
      }

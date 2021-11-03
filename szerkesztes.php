@@ -17,11 +17,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
      $ujFelhasznalok = $_POST['felhasznalok'] ?? 0;
      $ujDatum = $_POST['datum'] ?? null;
      $ujLeiras = $_POST['leiras'] ?? null;
+     $ujSzazalek = $_POST['szazalek'] ?? 0;
 
      $opSys -> setNev($ujNev);
      $opSys -> setFelhasznalok($ujFelhasznalok);
      $opSys -> setDatum(new DateTime($ujDatum));
      $opSys -> setLeiras($ujLeiras);
+     $opSys -> setSzazalek($ujSzazalek);
 
      $opSys -> szerkeszt();
 }
@@ -47,6 +49,7 @@ $lista = oprendszer::beolvas();
                <input type="number" name="felhasznalok" value="<?php echo $opSys -> getFelhasznalok() ?>"><br>
                <input type="date" name="datum" value="<?php echo $opSys -> getDatum() -> format('Y-m-d') ?>"><br>
                <input type="text" name="leiras" value="<?php echo $opSys -> getLeiras() ?>"><br>
+               <input type="number" name="szazalek" value="<?php echo $opSys -> getSzazalek() ?>"><br>
                <input class="mt-5" type="submit" value="Szerkesztés">
           </form>
           <a class="h3" href="index.php"><button>Mégse</button></a>

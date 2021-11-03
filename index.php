@@ -5,19 +5,25 @@ require_once "oprendszer.php";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      $torlesId = $_POST['torles'] ?? '';
+
      if ($torlesId === '') {
+
           $ujNev = $_POST['nev'] ?? '';
           $ujFelhasznalok = $_POST['felhasznalok'] ?? '';
           $ujDatum = $_POST['datum'] ?? '';
           $ujLeiras = $_POST['leiras'] ?? '';
+          $ujSzazalek = $_POST['szazalek'] ?? '';
      
-          if ($ujNev !== '' && $ujFelhasznalok !== '' && $ujLeiras !== '') {
-              $ujOprendszer = new oprendszer($ujNev, (int)$ujFelhasznalok, new DateTime($ujDatum), $ujLeiras);
+          if ($ujNev !== '' && $ujFelhasznalok !== '' && $ujLeiras !== '' && $ujSzazalek !== '') {
+
+              $ujOprendszer = new oprendszer($ujNev, (int)$ujFelhasznalok, new DateTime($ujDatum), $ujLeiras, $ujSzazalek);
           
               $ujOprendszer -> hozzaad();
           }
      } else {
+
           oprendszer::torles($torlesId);
+
      }
  }
  
@@ -36,26 +42,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      <title>Operációs rendszerek</title>
 </head>
 <body>
+
      <form method="POST" class="m-5 h3">
-          <input type="text" name="nev"><br>
-          <input type="number" name="felhasznalok"><br>
-          <input type="date" name="datum"><br>
-          <input type="text" name="leiras"><br>
+
+          Név: <input type="text" name="nev"><br>
+          Felhasználók száma: <input type="number" name="felhasznalok"><br>
+          Első verzió megjelenése: <input type="date" name="datum"><br>
+          Leírás: <input type="text" name="leiras"><br>
+          Emberek hány százaléke használja: <input type="number" name="szazalek"><br>
           <input class="mt-5" type="submit" value="Hozzáadás">
+
     </form>
+
      <div class="m-5">
+
           <?php
+
                foreach ($lista as $i) {
+
                     echo '<div class="h3 mb-5">';
                     echo 'Operációs rendszer neve: ' . $i -> getNev() . '<br>';
                     echo 'Felhasználók száma: ' . $i -> getFelhasznalok() . '<br>';
                     echo 'Első verzió megjelenése: ' . $i -> getDatum() -> format('Y-m-d') . '<br>';
                     echo 'Leírás: ' . $i -> getLeiras() . '<br>';
+                    echo 'Emberek hány százaléke használja: ' . $i -> getSzazalek() . '%<br>';
                     echo '<form method="POST"><button name="torles" value="' . $i -> getId() . '">Törlés</button></form>';
                     echo '<a href="szerkesztes.php?id=' . $i -> getId() . '"><button>Szerkesztés</button></a>';
                     echo '</div>';
+
                }
+
           ?>
+
      </div>
+
 </body>
 </html>
