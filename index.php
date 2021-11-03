@@ -3,20 +3,25 @@
 require_once "db.php";
 require_once "oprendszer.php";
 
-$lista = oprendszer::beolvas();
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-     $ujNev = $_POST['nev'] ?? '';
-     $ujFelhasznalok = $_POST['felhasznalok'] ?? '';
-     $ujDatum = $_POST['datum'] ?? '';
-     $ujLeiras = $_POST['leiras'] ?? '';
-
-     if ($ujNev !== '' && $ujFelhasznalok !== '' && $ujLeiras !== '') {
-         $ujOprendszer = new oprendszer($ujNev, (int)$ujFelhasznalok, new DateTime($ujDatum), $ujLeiras);
+     $torlesId = $_POST['torles'] ?? '';
+     if ($torlesId === '') {
+          $ujNev = $_POST['nev'] ?? '';
+          $ujFelhasznalok = $_POST['felhasznalok'] ?? '';
+          $ujDatum = $_POST['datum'] ?? '';
+          $ujLeiras = $_POST['leiras'] ?? '';
      
-         $ujOprendszer -> hozzaad();
+          if ($ujNev !== '' && $ujFelhasznalok !== '' && $ujLeiras !== '') {
+              $ujOprendszer = new oprendszer($ujNev, (int)$ujFelhasznalok, new DateTime($ujDatum), $ujLeiras);
+          
+              $ujOprendszer -> hozzaad();
+          }
+     } else {
+          oprendszer::torles($torlesId);
      }
  }
+ 
+ $lista = oprendszer::beolvas();
 
 ?><!DOCTYPE html>
 <html lang="hu">
@@ -46,6 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     echo 'Felhasználók száma: ' . $i -> getFelhasznalok() . '<br>';
                     echo 'Első verzió megjelenése: ' . $i -> getDatum() -> format('Y-m-d') . '<br>';
                     echo 'Leírás: ' . $i -> getLeiras() . '<br>';
+                    echo '<form method="POST"><button name="torles" value="' . $i -> getId() . '">Törlés</button></form>';
+                    echo '<a href="szerkesztes.php?id="' . $i -> getId() . '"><button>Szerkesztés</button></a>';
                     echo '</div>';
                }
           ?>

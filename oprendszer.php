@@ -73,11 +73,18 @@ class oprendszer {
      public function hozzaad() {
           global $db;
 
-          $hozzaadas = $db -> prepare('INSERT INTO op_systems(nev, felhasznalok_szama, letrehozas_datuma, leiras)
-                                        VALUES (:nev, :felhasznalok_szama, :letrehozas_datuma, :leiras)')
-                              -> execute([':nev' => $this -> nev,
-                                        ':felhasznalok_szama' => $this -> felhasznalok,
-                                        ':letrehozas_datuma' => $this -> datum -> format('Y-m-d'),
-                                        ':leiras' => $this -> leiras]);
+          $db -> prepare('INSERT INTO op_systems(nev, felhasznalok_szama, letrehozas_datuma, leiras)
+                         VALUES (:nev, :felhasznalok_szama, :letrehozas_datuma, :leiras)')
+          -> execute([':nev' => $this -> nev,
+                    ':felhasznalok_szama' => $this -> felhasznalok,
+                    ':letrehozas_datuma' => $this -> datum -> format('Y-m-d'),
+                    ':leiras' => $this -> leiras]);
+     }
+
+     public static function torles(int $id) {
+          global $db;
+
+          $db -> prepare('DELETE FROM op_systems WHERE id LIKE :id')
+          -> execute([':id' => $id]);
      }
 }
