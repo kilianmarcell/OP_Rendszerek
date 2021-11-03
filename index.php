@@ -5,6 +5,19 @@ require_once "oprendszer.php";
 
 $lista = oprendszer::beolvas();
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+     $ujNev = $_POST['nev'] ?? '';
+     $ujFelhasznalok = $_POST['felhasznalok'] ?? '';
+     $ujDatum = $_POST['datum'] ?? '';
+     $ujLeiras = $_POST['leiras'] ?? '';
+
+     if ($ujNev !== '' && $ujFelhasznalok !== '' && $ujLeiras !== '') {
+         $ujOprendszer = new oprendszer($ujNev, (int)$ujFelhasznalok, new DateTime($ujDatum), $ujLeiras);
+     
+         $ujOprendszer -> hozzaad();
+     }
+ }
+
 ?><!DOCTYPE html>
 <html lang="hu">
 <head>
@@ -18,6 +31,13 @@ $lista = oprendszer::beolvas();
      <title>Operációs rendszerek</title>
 </head>
 <body>
+     <form method="POST" class="m-5 h3">
+          <input type="text" name="nev"><br>
+          <input type="number" name="felhasznalok"><br>
+          <input type="date" name="datum"><br>
+          <input type="text" name="leiras"><br>
+          <input class="mt-5" type="submit" value="Hozzáadás">
+    </form>
      <div class="m-5">
           <?php
                foreach ($lista as $i) {
